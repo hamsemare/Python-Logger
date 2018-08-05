@@ -5,6 +5,8 @@ cursor= None
 accountN= None
 
 
+
+
 # Login 
 def Login():
 	global connection, cursor, accountN
@@ -16,7 +18,7 @@ def Login():
 		select * 
 		from user
 		''')
-	
+
 	dataNames= cursor.fetchall()
 	for n in dataNames:
 		na= list(n)
@@ -43,15 +45,18 @@ def Login():
 			print("\n"*10)
 		
 
+
+
+
 # Create an Account
 def Create():
 	global connection, cursor, accountN
 	names=[]
 	print("To quit enter Q at anytime!")
 
-	n= input("Enter First and Last Name: ")
+	i= input("Enter First and Last Name: ")
 
-	if(n=="q" or n=="Q"):
+	if(i=="q" or i=="Q"):
 			exit(0)
 
 	# Check the database
@@ -63,7 +68,6 @@ def Create():
 	for n in dataNames:
 		na= list(n)
 		names.append(na)
-
 	accounts=[]
 	for i in names:
 		accounts.append(i[0])
@@ -74,7 +78,7 @@ def Create():
 			exit(0)
 		if(name not in accounts):
 			accountN= name
-			cursor.execute('''insert into user values (?,?);''', (str(name, ),str(n,)))
+			cursor.execute('''insert into user values (?,?);''', (accountN,i))
 			connection.commit()
 			return 
 		else:
@@ -89,7 +93,60 @@ def Create():
 
 
 
+
+
+# Show workout list of the user
+def show():
+	global accountN, cursor, connection
+	print("\n"*20)
+	print("Show Workouts")
+	print("-"*10)
+	print("To quit enter Q at anytime!")
+	print("\n"*2)
+
+	# Retrieve all workouts associated to the Account Name
+
+
+
+	print("Do you want to continue?")
+	q= input("Enter Q to Quit or Anything else to Continue: ")
+	if(q=="q" or q=="q"):
+		return
+	else:
+		print("\n"*5)
+		home()
+
+
+
+
+# Add a workout for the user
+def add():
+	global accountN, cursor, connection
+	print("\n"*20)
+	print("Add workout")
+	print("-"*10)
+	print("To quit enter Q at anytime!")
+	print("\n"*2)
+
+	# Workout needs name, reps,
+	workoutN=input("Enter Workout name: ") 
+	sets=input("Enter # of Sets: ")
+	reps=input("Enter # of Reps: ")
+
+	# add to database
+
+	print("Do you want to continue?")
+	q= input("Enter Q to Quit or Anything else to Continue: ")
+	if(q=="q" or q=="q"):
+		return
+	else:
+		print("\n"*5)
+		home()
+
+
+
 # HOME DASHBOARD
+# Prompt the user to show workouts or add a workout
 def home():
 	global accountN, cursor, connection
 	print("\n"*20)
@@ -107,17 +164,14 @@ def home():
 		choice= input("Choice: ")
 		if(choice=="q" or choice=="Q"):
 			exit(0)
-		if(choice==1):
+
+		if(choice=="1"):
 			add()
-			return
-		else if(choice==2):
+
+		elif(choice=="2"):
 			show()
-			return
-		else:
-			print("\n"*5)
-
-	exit(0)
-
+		
+		print("\n"*5)
 
 
 
@@ -155,17 +209,10 @@ def main():
 		else:
 			print("\n"*20)
 
-
 	print("\n" * 10)
 
-
-
-
-
-
-
-
-
-
-
 main()
+
+
+
+
